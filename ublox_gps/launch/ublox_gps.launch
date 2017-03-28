@@ -1,7 +1,7 @@
 <launch>
     <arg name="log" default="false"/>
 
-    <arg name="device" default="/dev/ttyACM0"/>
+    <arg name="device" default="/dev/nautonomous/gps"/>
     <arg name="gps" default="gps"/>
     <arg name="frame_id" default="$(arg gps)_frame"/>
     <arg name="baudrate" default="115200"/>

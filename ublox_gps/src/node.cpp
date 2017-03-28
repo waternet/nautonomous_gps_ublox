@@ -296,7 +296,7 @@ int main(int argc, char **argv) {
   int dr_limit;
   int ublox_version;
   ros::NodeHandle param("~");
-  param.param("device", device, std::string("/dev/ttyUSB0"));
+  param.param("device", device, std::string("/dev/nautonomous/gps"));
   param.param("frame_id", frame_id, std::string("gps"));
   param.param("baudrate", baudrate, 9600);
   param.param("rate", rate, 4); //  in Hz
