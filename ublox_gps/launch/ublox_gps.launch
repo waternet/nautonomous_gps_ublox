@@ -25,6 +25,7 @@
     <!-- Manage use of GLONASS and BeiDou -->
     <arg name="enable_beidou" default="false"/>
     <arg name="enable_glonass" default="true"/>
+    <arg name="enable_galileo" default="true"/>
 
     <!-- Manage use of PPP -->
     <arg name="enable_ppp" default="false"/>
@@ -43,6 +44,7 @@
         <param name="dr_limit" type="int" value="$(arg dr_limit)"/>
         <param name="enable_beidou" type="bool" value="$(arg enable_beidou)"/>
         <param name="enable_glonass" type="bool" value="$(arg enable_glonass)"/>
+	<param name="enable_galileo" type="bool" value="$(arg enable_galileo)"/>
         <param name="enable_ppp" type="bool" value="$(arg enable_ppp)"/>
         <param name="ublox_version" type="int" value="$(arg ublox_version)"/>
     </node>
