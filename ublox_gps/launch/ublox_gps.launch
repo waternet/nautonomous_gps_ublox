@@ -4,11 +4,11 @@
     <arg name="device" default="/dev/nautonomous/gps"/>
     <arg name="gps" default="gps"/>
     <arg name="frame_id" default="$(arg gps)_frame"/>
-    <arg name="baudrate" default="115200"/>
+    <arg name="baudrate" default="460800"/>
     <arg name="output" default="screen"/>
 
     <!-- Read at 4Hz -->
-    <arg name="rate" default="10"/>
+    <arg name="rate" default="20"/>
 
     <!-- SBAS enabled -->
     <arg name="enable_sbas" default="true"/>
@@ -24,7 +24,7 @@
 
     <!-- Manage use of GLONASS and BeiDou -->
     <arg name="enable_beidou" default="false"/>
-    <arg name="enable_glonass" default="false"/>
+    <arg name="enable_glonass" default="true"/>
 
     <!-- Manage use of PPP -->
     <arg name="enable_ppp" default="false"/>
