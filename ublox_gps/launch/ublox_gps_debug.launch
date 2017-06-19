@@ -4,11 +4,11 @@
     <arg name="device" default="/dev/nautonomous/gps"/>
     <arg name="gps" default="gps"/>
     <arg name="frame_id" default="$(arg gps)_frame"/>
-    <arg name="baudrate" default="460800"/>
+    <arg name="baudrate" default="57600"/>
     <arg name="output" default="screen"/>
 
     <!-- Read at 4Hz -->
-    <arg name="rate" default="20"/>
+    <arg name="rate" default="10"/>
 
     <!-- SBAS enabled -->
     <arg name="enable_sbas" default="true"/>
@@ -17,10 +17,10 @@
     <arg name="dynamic_model" default="portable"/>
 
     <!-- 2D and 3D fixes enabled -->
-    <arg name="fix_mode" default="2d"/>
+    <arg name="fix_mode" default="3d"/>
 
     <!-- No dead reckoning after signal loss -->
-    <arg name="dr_limit" default="0"/>
+    <arg name="dr_limit" default="30"/>
 
     <!-- Manage use of GLONASS and BeiDou -->
     <arg name="enable_beidou" default="false"/>
@@ -47,6 +47,7 @@
 	    <param name="enable_galileo" type="bool" value="$(arg enable_galileo)"/>
         <param name="enable_ppp" type="bool" value="$(arg enable_ppp)"/>
         <param name="ublox_version" type="int" value="$(arg ublox_version)"/>
+	    <param name="all" value="True"/>
     </node>
 
 </launch>
