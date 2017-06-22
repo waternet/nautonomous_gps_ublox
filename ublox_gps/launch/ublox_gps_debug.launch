@@ -24,8 +24,8 @@
 
     <!-- Manage use of GLONASS and BeiDou -->
     <arg name="enable_beidou" default="false"/>
-    <arg name="enable_glonass" default="true"/>
-    <arg name="enable_galileo" default="true"/>
+    <arg name="enable_glonass" default="false"/>
+    <arg name="enable_galileo" default="false"/>
 
     <!-- Manage use of PPP -->
     <arg name="enable_ppp" default="false"/>
