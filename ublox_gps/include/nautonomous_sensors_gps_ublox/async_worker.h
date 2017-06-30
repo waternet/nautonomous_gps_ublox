@@ -29,7 +29,7 @@
 #ifndef UBLOX_GPS_ASYNC_WORKER_H
 #define UBLOX_GPS_ASYNC_WORKER_H
 
-#include <ublox_gps/gps.h>
+#include <nautonomous_sensors_gps_ublox/gps.h>
 
 #include <boost/thread.hpp>
 #include <boost/thread/condition.hpp>
@@ -38,7 +38,7 @@
 
 #include "worker.h"
 
-namespace ublox_gps {
+namespace nautonomous_sensors_gps_ublox {
 
 static const int debug = 1;
 
@@ -177,6 +177,6 @@ void AsyncWorker<StreamT>::wait(const boost::posix_time::time_duration &timeout)
   read_condition_.timed_wait(lock, timeout);
 }
 
-} // namespace ublox_gps
+} // namespace nautonomous_sensors_gps_ublox
 
 #endif // UBLOX_GPS_ASYNC_WORKER_H

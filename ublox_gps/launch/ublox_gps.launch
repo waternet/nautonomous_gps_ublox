@@ -1,10 +1,12 @@
 <launch>
-    <arg name="log" default="false"/>
+
+   	<arg name="rosbag_enabled" default="false"/>
+	<arg name="rosbag_prefix_url" default="/tmp"/>
 
     <arg name="device" default="/dev/nautonomous/gps"/>
     <arg name="gps" default="gps"/>
     <arg name="frame_id" default="$(arg gps)_frame"/>
-    <arg name="baudrate" default="460800"/>
+    <arg name="baudrate" default="57600"/>
     <arg name="output" default="screen"/>
 
     <!-- Read at 4Hz -->
@@ -17,15 +19,10 @@
     <arg name="dynamic_model" default="portable"/>
 
     <!-- 2D and 3D fixes enabled -->
-    <arg name="fix_mode" default="2d"/>
+    <arg name="fix_mode" default="3d"/>
 
     <!-- No dead reckoning after signal loss -->
-    <arg name="dr_limit" default="0"/>
-
-    <!-- Manage use of GLONASS and BeiDou -->
-    <arg name="enable_beidou" default="false"/>
-    <arg name="enable_glonass" default="true"/>
-    <arg name="enable_galileo" default="true"/>
+    <arg name="dr_limit" default="30"/>
 
     <!-- Manage use of PPP -->
     <arg name="enable_ppp" default="false"/>
@@ -33,7 +30,31 @@
     <!-- Specify ublox version (6,7,8) -->
     <arg name="ublox_version" default="8"/>
 
-    <node name="$(arg gps)" pkg="ublox_gps" type="ublox_gps" output="$(arg output)">
+    <arg name="debug_topics" default="false"/>
+
+    <arg name="gps_fix_topic" default="gps_fix_topic"/>
+    <arg name="gps_fix_velocity_topic" default="gps_fix_velocity_topic"/>
+
+    <arg name="gps_topic_prefix" default="/sensor/gps"/>
+
+    <arg name="navstatus_topic" default="$(arg gps_topic_prefix)/navstatus"/>
+    <arg name="navsol_topic" default="$(arg gps_topic_prefix)/navsol"/>
+    <arg name="navvelned_topic" default="$(arg gps_topic_prefix)/navvelned"/>
+    <arg name="navposllh_topic" default="$(arg gps_topic_prefix)/navposllh"/>
+    <arg name="navsvinfo_topic" default="$(arg gps_topic_prefix)/navsvinfo"/>
+    <arg name="navclock_topic" default="$(arg gps_topic_prefix)/navclock"/>
+
+    <arg name="rxmraw_topic" default="$(arg gps_topic_prefix)/rxmraw"/>
+    <arg name="rxmsfrb_topic" default="$(arg gps_topic_prefix)/rxmsfrb"/>
+    <arg name="rxmalm_topic" default="$(arg gps_topic_prefix)/rxmalm"/>
+    <arg name="rxmeph_topic" default="$(arg gps_topic_prefix)/rxmeph"/>
+
+    <arg name="aidalm_topic" default="$(arg gps_topic_prefix)/aidalm"/>
+    <arg name="aideph_topic" default="$(arg gps_topic_prefix)/aideph"/>
+    <arg name="aidhui_topic" default="$(arg gps_topic_prefix)/aidhui"/>
+
+    <!-- TODO make config file -->
+    <node name="nautonomous_sensor_gps_ublox" pkg="ublox_gps" type="ublox_gps" output="$(arg output)">
         <param name="device" type="string" value="$(arg device)"/>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
         <param name="baudrate" type="int" value="$(arg baudrate)"/>
@@ -42,11 +63,36 @@
         <param name="dynamic_model" type="string" value="$(arg dynamic_model)"/>
         <param name="fix_mode" type="string" value="$(arg fix_mode)"/>
         <param name="dr_limit" type="int" value="$(arg dr_limit)"/>
-        <param name="enable_beidou" type="bool" value="$(arg enable_beidou)"/>
-        <param name="enable_glonass" type="bool" value="$(arg enable_glonass)"/>
-	    <param name="enable_galileo" type="bool" value="$(arg enable_galileo)"/>
         <param name="enable_ppp" type="bool" value="$(arg enable_ppp)"/>
         <param name="ublox_version" type="int" value="$(arg ublox_version)"/>
+	    <param name="all" value="$(arg debug_topics)"/>
+
+        <remap from="gps_fix_topic"           to="$(arg gps_fix_topic)"/>
+        <remap from="gps_fix_velocity_topic"  to="$(arg gps_fix_velocity_topic)"/>
+
+        <remap from="navstatus_topic" to="$(arg navstatus_topic)"/>
+        <remap from="navsol_topic"    to="$(arg navsol_topic)"/>
+        <remap from="navvelned_topic" to="$(arg navvelned_topic)"/>
+        <remap from="navposllh_topic" to="$(arg navposllh_topic)"/>
+        <remap from="navsvinfo_topic" to="$(arg navsvinfo_topic)"/>
+        <remap from="navclock_topic"  to="$(arg navclock_topic)"/>
+
+        <remap from="rxmraw_topic"    to="$(arg rxmraw_topic)"/>
+        <remap from="rxmsfrb_topic"   to="$(arg rxmsfrb_topic)"/>
+        <remap from="rxmalm_topic"    to="$(arg rxmalm_topic)"/>
+        <remap from="rxmeph_topic"    to="$(arg rxmeph_topic)"/>
+
+        <remap from="aidalm_topic"    to="$(arg aidalm_topic)"/>
+        <remap from="aideph_topic"    to="$(arg aideph_topic)"/>
+        <remap from="aidhui_topic"    to="$(arg aidhui_topic)"/>
+
     </node>
+    
+    <group if="$rosbag_enabled">
+        <node pkg="rosbag" type="record" name="rosbag_gps_ublox" args="record -o $(arg rosbag_prefix_url)/gps/ublox/fix $(arg gps_fix_topic) $(arg gps_fix_velocity_topic)" output="screen"/>
+        <group if="$(arg debug_topics)">
+	        <node pkg="rosbag" type="record" name="rosbag_gps_ublox_debug" args="record -o $(arg aidhui_topic) $(arg aideph_topic) $(arg aidalm_topic) $(arg rxmeph_topic) $(arg rxmalm_topic) $(arg rxmsfrb_topic) $(arg rxmraw_topic) $(arg navclock_topic) $(arg rosbag_prefix_url)/gps/ublox/debug $(arg navstatus_topic) $(arg navsol_topic) $(arg navvelned_topic) $(arg navposllh_topic) $(arg navsvinfo_topic)" output="screen"/>
+        </group>
+    </group>
 
 </launch>

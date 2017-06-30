@@ -32,7 +32,7 @@
 #include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-namespace ublox_gps {
+namespace nautonomous_sensors_gps_ublox {
 
 class Worker
 {
@@ -48,6 +48,6 @@ public:
   virtual bool isOpen() const = 0;
 };
 
-} // namespace ublox_gps
+} // namespace nautonomous_sensors_gps_ublox
 
 #endif // UBLOX_GPS_WORKER_H

@@ -27,7 +27,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //=================================================================================================
 
-#include <ublox_gps/gps.h>
+#include <nautonomous_sensors_gps_ublox/gps.h>
 #include <stdexcept>
 #include <locale>
 #include <ublox_msgs/CfgRATE.h>
@@ -35,7 +35,7 @@
 #include <ublox_msgs/CfgNAVX5.h>
 #include <ublox_msgs/CfgPRT.h>
 
-namespace ublox_gps {
+namespace nautonomous_sensors_gps_ublox {
 
 using namespace ublox_msgs;
 
@@ -43,17 +43,17 @@ DynamicModel modelFromString(const std::string& model) {
   std::string lower = model;
   std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
 
-  std::map <std::string, ublox_gps::DynamicModel> models;
-  models["portable"] = ublox_gps::DYN_MODEL_PORTABLE;
-  models["stationary"] = ublox_gps::DYN_MODEL_STATIONARY;
-  models["pedestrian"] = ublox_gps::DYN_MODEL_PEDESTRIAN;
-  models["automotive"] = ublox_gps::DYN_MODEL_AUTOMOTIVE;
-  models["sea"] = ublox_gps::DYN_MODEL_SEA;
-  models["airborne1"] = ublox_gps::DYN_MODEL_AIRBORNE_1G;
-  models["airborne2"] = ublox_gps::DYN_MODEL_AIRBORNE_2G;
-  models["airborne4"] = ublox_gps::DYN_MODEL_AIRBORNE_4G;
+  std::map <std::string, nautonomous_sensors_gps_ublox::DynamicModel> models;
+  models["portable"] = nautonomous_sensors_gps_ublox::DYN_MODEL_PORTABLE;
+  models["stationary"] = nautonomous_sensors_gps_ublox::DYN_MODEL_STATIONARY;
+  models["pedestrian"] = nautonomous_sensors_gps_ublox::DYN_MODEL_PEDESTRIAN;
+  models["automotive"] = nautonomous_sensors_gps_ublox::DYN_MODEL_AUTOMOTIVE;
+  models["sea"] = nautonomous_sensors_gps_ublox::DYN_MODEL_SEA;
+  models["airborne1"] = nautonomous_sensors_gps_ublox::DYN_MODEL_AIRBORNE_1G;
+  models["airborne2"] = nautonomous_sensors_gps_ublox::DYN_MODEL_AIRBORNE_2G;
+  models["airborne4"] = nautonomous_sensors_gps_ublox::DYN_MODEL_AIRBORNE_4G;
   
-  std::map<std::string, ublox_gps::DynamicModel>::iterator I = models.find(lower);
+  std::map<std::string, nautonomous_sensors_gps_ublox::DynamicModel>::iterator I = models.find(lower);
   if (I == models.end()) {
     throw std::runtime_error(lower + " is not a valid dynamic model.");
   }
@@ -267,4 +267,4 @@ bool CallbackHandler::wait(const boost::posix_time::time_duration &timeout) {
   return condition_.timed_wait(lock, timeout);
 }
 
-} // namespace ublox_gps
+} // namespace nautonomous_sensors_gps_ublox

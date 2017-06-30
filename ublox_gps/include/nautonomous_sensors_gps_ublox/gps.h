@@ -34,10 +34,10 @@
 #include <map>
 
 #include <ublox/serialization/ublox_msgs.h>
-#include <ublox_gps/async_worker.h>
-#include <ublox_gps/callback.h>
+#include <nautonomous_sensors_gps_ublox/async_worker.h>
+#include <nautonomous_sensors_gps_ublox/callback.h>
 
-namespace ublox_gps {
+namespace nautonomous_sensors_gps_ublox {
 
 /**
  * @brief Dynamic model - consult documentation of CFG-NAV5 for details.
@@ -257,6 +257,6 @@ template <typename ConfigT> bool Gps::configure(const ConfigT& message, bool wai
   return (acknowledge_ == ACK);
 }
 
-} // namespace ublox_gps
+} // namespace nautonomous_sensors_gps_ublox
 
 #endif // UBLOX_GPS_H

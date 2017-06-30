@@ -33,7 +33,7 @@
 #include <boost/thread.hpp>
 #include <ublox/serialization/ublox_msgs.h>
 
-namespace ublox_gps {
+namespace nautonomous_sensors_gps_ublox {
 
 class CallbackHandler {
 public:
@@ -58,6 +58,6 @@ private:
 
 typedef std::multimap<std::pair<uint8_t,uint8_t>, boost::shared_ptr<CallbackHandler> > Callbacks;
 
-} // namespace ublox_gps
+} // namespace nautonomous_sensors_gps_ublox
 
 #endif // UBLOX_GPS_CALLBACK_H
