@@ -19,7 +19,7 @@
     <arg name="dynamic_model" default="portable"/>
 
     <!-- 2D and 3D fixes enabled -->
-    <arg name="fix_mode" default="3d"/>
+    <arg name="fix_mode" default="both"/>
 
     <!-- No dead reckoning after signal loss -->
     <arg name="dr_limit" default="30"/>
@@ -32,10 +32,10 @@
 
     <arg name="debug_topics" default="false"/>
 
-    <arg name="gps_fix_topic" default="gps_fix_topic"/>
-    <arg name="gps_fix_velocity_topic" default="gps_fix_velocity_topic"/>
-
     <arg name="gps_topic_prefix" default="/sensor/gps"/>
+
+    <arg name="gps_fix_topic" default="$(arg gps_topic_prefix)/fix"/>
+    <arg name="gps_fix_velocity_topic" default="$(arg gps_topic_prefix)/fix_velocity"/>
 
     <arg name="navstatus_topic" default="$(arg gps_topic_prefix)/navstatus"/>
     <arg name="navsol_topic" default="$(arg gps_topic_prefix)/navsol"/>
@@ -67,28 +67,28 @@
         <param name="ublox_version" type="int" value="$(arg ublox_version)"/>
 	    <param name="all" value="$(arg debug_topics)"/>
 
-        <remap from="gps_fix_topic"           to="$(arg gps_fix_topic)"/>
-        <remap from="gps_fix_velocity_topic"  to="$(arg gps_fix_velocity_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/fix_topic"           to="$(arg gps_fix_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/fix_velocity_topic"  to="$(arg gps_fix_velocity_topic)"/>
 
-        <remap from="navstatus_topic" to="$(arg navstatus_topic)"/>
-        <remap from="navsol_topic"    to="$(arg navsol_topic)"/>
-        <remap from="navvelned_topic" to="$(arg navvelned_topic)"/>
-        <remap from="navposllh_topic" to="$(arg navposllh_topic)"/>
-        <remap from="navsvinfo_topic" to="$(arg navsvinfo_topic)"/>
-        <remap from="navclock_topic"  to="$(arg navclock_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/navstatus" to="$(arg navstatus_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/navsol"    to="$(arg navsol_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/navvelned" to="$(arg navvelned_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/navposllh" to="$(arg navposllh_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/navsvinfo" to="$(arg navsvinfo_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/navclock"  to="$(arg navclock_topic)"/>
 
-        <remap from="rxmraw_topic"    to="$(arg rxmraw_topic)"/>
-        <remap from="rxmsfrb_topic"   to="$(arg rxmsfrb_topic)"/>
-        <remap from="rxmalm_topic"    to="$(arg rxmalm_topic)"/>
-        <remap from="rxmeph_topic"    to="$(arg rxmeph_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/rxmraw"    to="$(arg rxmraw_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/rxmsfrb"   to="$(arg rxmsfrb_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/rxmalm"    to="$(arg rxmalm_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/rxmeph"    to="$(arg rxmeph_topic)"/>
 
-        <remap from="aidalm_topic"    to="$(arg aidalm_topic)"/>
-        <remap from="aideph_topic"    to="$(arg aideph_topic)"/>
-        <remap from="aidhui_topic"    to="$(arg aidhui_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/aidalm"    to="$(arg aidalm_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/aideph"    to="$(arg aideph_topic)"/>
+        <remap from="/nautonomous_sensor_gps_ublox/aidhui"    to="$(arg aidhui_topic)"/>
 
     </node>
     
-    <group if="$rosbag_enabled">
+    <group if="$(arg rosbag_enabled)">
         <node pkg="rosbag" type="record" name="rosbag_gps_ublox" args="record -o $(arg rosbag_prefix_url)/gps/ublox/fix $(arg gps_fix_topic) $(arg gps_fix_velocity_topic)" output="screen"/>
         <group if="$(arg debug_topics)">
 	        <node pkg="rosbag" type="record" name="rosbag_gps_ublox_debug" args="record -o $(arg aidhui_topic) $(arg aideph_topic) $(arg aidalm_topic) $(arg rxmeph_topic) $(arg rxmalm_topic) $(arg rxmsfrb_topic) $(arg rxmraw_topic) $(arg navclock_topic) $(arg rosbag_prefix_url)/gps/ublox/debug $(arg navstatus_topic) $(arg navsol_topic) $(arg navvelned_topic) $(arg navposllh_topic) $(arg navsvinfo_topic)" output="screen"/>
