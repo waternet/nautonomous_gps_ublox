@@ -27,7 +27,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //=================================================================================================
 
-#include <ublox_gps/gps.h>
+#include <nautonomous_sensors_gps_ublox/gps.h>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/serial_port.hpp>
 
@@ -51,7 +51,7 @@
 
 const static uint32_t kROSQueueSize = 1;
 
-using namespace ublox_gps;
+using namespace nautonomous_sensors_gps_ublox;
 
 boost::shared_ptr<ros::NodeHandle> nh;
 boost::shared_ptr<diagnostic_updater::Updater> updater;
@@ -90,7 +90,7 @@ void publishNavVelNED(const ublox_msgs::NavVELNED& m) {
 
   // Example geometry message
   static ros::Publisher velocityPublisher =
-      nh->advertise<geometry_msgs::TwistWithCovarianceStamped>("fix_velocity",
+      nh->advertise<geometry_msgs::TwistWithCovarianceStamped>("fix_velocity_topic",
                                                                kROSQueueSize);
   if (m.iTOW == last_nav_pos.iTOW) {
     //  use same time as las navposllh message
@@ -125,7 +125,7 @@ void publishNavPosLLH(const ublox_msgs::NavPOSLLH& m) {
 
   // Position message
   static ros::Publisher fixPublisher =
-      nh->advertise<sensor_msgs::NavSatFix>("fix", kROSQueueSize);
+      nh->advertise<sensor_msgs::NavSatFix>("fix_topic", kROSQueueSize);
   if (m.iTOW == last_nav_vel.iTOW) {
     //  use last timestamp
     fix.header.stamp = velocity.header.stamp;
@@ -279,7 +279,7 @@ int main(int argc, char** argv) {
   boost::shared_ptr<boost::asio::serial_port> serial_handle;
   bool setup_ok = true;
 
-  ros::init(argc, argv, "ublox_gps");
+  ros::init(argc, argv, "nautonomous_sensors_gps_ublox");
   nh.reset(new ros::NodeHandle("~"));
   if (!nh->hasParam("diagnostic_period")) {
     nh->setParam("diagnostic_period", 0.2);  //  5Hz diagnostic period
@@ -327,8 +327,8 @@ int main(int argc, char** argv) {
   DynamicModel dmodel;
   FixMode fmode;
   try {
-    dmodel = ublox_gps::modelFromString(dynamic_model);
-    fmode = ublox_gps::fixModeFromString(fix_mode);
+    dmodel = nautonomous_sensors_gps_ublox::modelFromString(dynamic_model);
+    fmode = nautonomous_sensors_gps_ublox::fixModeFromString(fix_mode);
   } catch (std::exception& e) {
     ROS_ERROR("Invalid settings: %s", e.what());
     return 1;
